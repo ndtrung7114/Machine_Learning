@@ -5,7 +5,7 @@ import copy
 
 open_x = open('datax')
 open_y = open('datay')
-
+# Transfor data to create array
 read_line_x = open_x.readlines()
 read_line_y = open_y.readlines()
 list_x = []
@@ -16,6 +16,12 @@ for i in range(len(read_line_x)):
     list_x.append(split_xi)
 datax = np.array(list_x)
 
+
+for i in range(len(read_line_y)):
+    read_line_y[i] = float(read_line_y[i])
+datay = np.array(read_line_y)
+
+# Create function to normalize datax
 def zscore_normalize_features(x):
     mu = np.mean(x,axis=0)
     sigma = np.std(x,axis=0)
@@ -23,14 +29,9 @@ def zscore_normalize_features(x):
 
     return norm_x
 
-for i in range(len(read_line_y)):
-    read_line_y[i] = float(read_line_y[i])
-
-datay = np.array(read_line_y)
-
 datax = zscore_normalize_features(datax)
 
-
+#Create function compute cost_function
 def compute_cost(x,y,w,b):
     cost = 0
     m =x.shape[0]
@@ -40,6 +41,7 @@ def compute_cost(x,y,w,b):
     cost /= (2*m)
     return cost
 
+#Create function compute gradient
 def comppute_gradient(x,y,w,b):
     m,n = x.shape
     dj_dw = np.zeros((n,))
@@ -54,6 +56,7 @@ def comppute_gradient(x,y,w,b):
     dj_db /= m
     return dj_dw, dj_db
 
+#Create function to compute w_final and b_final
 def gradient_descent(x,y,w,b,alpha,iteration,cost_function,gradient_function):
     j_histrory = []
 
